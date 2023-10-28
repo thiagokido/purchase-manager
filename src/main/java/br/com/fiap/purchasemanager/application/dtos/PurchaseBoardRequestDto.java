@@ -16,6 +16,7 @@ public record PurchaseBoardRequestDto (
 ) {
     public PurchaseBoardEntity toPurchaseBoardEntity() {
         return new PurchaseBoardEntity(
+                null,
                 this.description(),
                 this.constructionName(),
                 PurchaseBoardStatus.valueOf("CREATED"),

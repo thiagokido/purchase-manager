@@ -20,15 +20,42 @@ public class PurchaseRequestModel {
     @ManyToOne
     @JoinColumn(name = "purchase_board_id", nullable = false)
     private PurchaseBoardModel purchaseBoard;
+    @OneToOne(mappedBy = "purchaseRequest")
+    private OrderItemModel orderItem;
 
-    public PurchaseRequestModel(String itemDescription, int quantity, String status, PurchaseBoardModel purchaseBoard) {
+    public PurchaseRequestModel() {}
+
+    public PurchaseRequestModel(UUID id, String itemDescription, int quantity, String status, PurchaseBoardModel purchaseBoard) {
+        this.id = id;
         this.itemDescription = itemDescription;
         this.quantity = quantity;
         this.status = status;
         this.purchaseBoard = purchaseBoard;
     }
 
-    public PurchaseRequestModel() {}
+    public UUID getId() {
+        return id;
+    }
+
+    public String getItemDescription() {
+        return itemDescription;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public PurchaseBoardModel getPurchaseBoard() {
+        return purchaseBoard;
+    }
+
+    public OrderItemModel getOrderItem() {
+        return orderItem;
+    }
 
     public PurchaseRequestEntity toPurchaseRequestEntity() {
         return new PurchaseRequestEntity(

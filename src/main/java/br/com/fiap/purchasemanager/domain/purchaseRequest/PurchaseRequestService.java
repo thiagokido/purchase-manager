@@ -28,7 +28,7 @@ public class PurchaseRequestService {
 
     public PurchaseRequestResponseDto save(PurchaseRequestRequestDto purchaseRequestDto, UUID purchaseBoardId) {
 
-        PurchaseBoardModel purchaseBoard = purchaseBoardRepository.findById(purchaseBoardId).orElseThrow();
+        PurchaseBoardModel purchaseBoard = getPurchaseBoardById(purchaseBoardId);
 
         if (Objects.equals(purchaseBoard.getStatus(), PurchaseBoardStatus.CREATED.toString())) {
             purchaseBoard.setStatus(PurchaseBoardStatus.ON_GOING.toString());
@@ -36,35 +36,84 @@ public class PurchaseRequestService {
         }
 
         PurchaseRequestEntity purchaseRequest = purchaseRequestDto.toPurchaseRequestEntity();
-        PurchaseRequestModel purchaseRequestModel = toPurchaseRequestModel(purchaseRequest, purchaseBoard);
+        PurchaseRequestModel purchaseRequestModel = purchaseRequest.toPurchaseRequestModel(purchaseBoard);
 
         PurchaseRequestEntity savedPurchaseRequest = purchaseRequestRepository.save(purchaseRequestModel).toPurchaseRequestEntity();
 
-        return toPurchaseRequestResponseDto(savedPurchaseRequest, purchaseBoard);
+        return savedPurchaseRequest.toPurchaseRequestResponseDto(purchaseBoard.getId());
     }
 
-    public PurchaseRequestResponseDto findById(UUID boardId, UUID requestId) {
+    public PurchaseRequestResponseDto findById(UUID purchaseBoardId, UUID requestId) {
 
-        PurchaseRequestEntity purchaseRequest = purchaseRequestRepository.findByPurchaseBoardIdAndId(boardId, requestId).toPurchaseRequestEntity();
-        return purchaseRequest.toPurchaseRequestResponseDto(boardId);
+        PurchaseRequestEntity purchaseRequest = getRequestByIdAndPurchaseBoard(purchaseBoardId, requestId)
+                .toPurchaseRequestEntity();
+
+        return purchaseRequest.toPurchaseRequestResponseDto(purchaseBoardId);
     }
 
-    private PurchaseRequestModel toPurchaseRequestModel(PurchaseRequestEntity purchaseRequest, PurchaseBoardModel purchaseBoard) {
-        return new PurchaseRequestModel(
-                purchaseRequest.getItemDescription(),
-                purchaseRequest.getQuantity(),
-                purchaseRequest.getStatus().toString(),
-                purchaseBoard
-        );
+    public void deleteRequest(UUID purchaseBoardId, UUID requestId) {
+
+        PurchaseRequestModel purchaseRequest = getRequestByIdAndPurchaseBoard(purchaseBoardId, requestId);
+
+        if (Objects.equals(purchaseRequest.getStatus(), PurchaseRequestStatus.PENDING_APPROVAL.toString())) {
+            purchaseRequestRepository.delete(purchaseRequest);
+        } else {
+            throw new RuntimeException("Apenas requests com status PENDING_APPROVAL podem ser excluídas");
+        }
     }
 
-    private PurchaseRequestResponseDto toPurchaseRequestResponseDto(PurchaseRequestEntity purchaseRequest, PurchaseBoardModel purchaseBoard) {
-        return new PurchaseRequestResponseDto(
-                purchaseRequest.getId(),
-                purchaseRequest.getItemDescription(),
-                purchaseRequest.getQuantity(),
-                purchaseRequest.getStatus().toString(),
-                purchaseBoard.getId()
-        );
+    public PurchaseRequestResponseDto updateRequest(UUID purchaseBoardId, UUID requestId, PurchaseRequestRequestDto purchaseRequestRequestDto) {
+
+        PurchaseBoardModel purchaseBoard = getPurchaseBoardById(purchaseBoardId);
+        PurchaseRequestEntity purchaseRequest = getRequestByIdAndPurchaseBoard(purchaseBoardId, requestId).toPurchaseRequestEntity();
+
+        if (!Objects.equals(purchaseRequest.getStatus(), PurchaseRequestStatus.COMPLETED)) {
+
+            purchaseRequest.changeItemDescription(purchaseRequestRequestDto.itemDescription());
+            purchaseRequest.changeQuantity(purchaseRequestRequestDto.quantity());
+            purchaseRequest.moveToPending();
+
+            return purchaseRequestRepository.save(purchaseRequest.toPurchaseRequestModel(purchaseBoard))
+                    .toPurchaseRequestEntity()
+                    .toPurchaseRequestResponseDto(purchaseBoard.getId());
+        } else {
+            throw new RuntimeException("Requisições finalizadas não podem ser alteradas");
+        }
+    }
+
+    public PurchaseRequestResponseDto rejectRequest(UUID purchaseBoardId, UUID requestId) {
+
+        PurchaseBoardModel purchaseBoard = getPurchaseBoardById(purchaseBoardId);
+        PurchaseRequestEntity purchaseRequest = getRequestByIdAndPurchaseBoard(purchaseBoardId, requestId)
+                .toPurchaseRequestEntity();
+
+        purchaseRequest.reject();
+
+        purchaseRequest = purchaseRequestRepository.save(purchaseRequest.toPurchaseRequestModel(purchaseBoard))
+                .toPurchaseRequestEntity();
+
+        return purchaseRequest.toPurchaseRequestResponseDto(purchaseBoard.getId());
+    }
+
+    public PurchaseRequestResponseDto approveRequest(UUID purchaseBoardId, UUID requestId) {
+
+        PurchaseBoardModel purchaseBoard = getPurchaseBoardById(purchaseBoardId);
+        PurchaseRequestEntity purchaseRequest = getRequestByIdAndPurchaseBoard(purchaseBoardId, requestId)
+                .toPurchaseRequestEntity();
+
+        purchaseRequest.approve();
+
+        purchaseRequest = purchaseRequestRepository.save(purchaseRequest.toPurchaseRequestModel(purchaseBoard))
+                .toPurchaseRequestEntity();
+
+        return purchaseRequest.toPurchaseRequestResponseDto(purchaseBoard.getId());
+    }
+
+    private PurchaseBoardModel getPurchaseBoardById(UUID purchaseBoardId) {
+        return purchaseBoardRepository.findById(purchaseBoardId).orElseThrow();
+    }
+
+    private PurchaseRequestModel getRequestByIdAndPurchaseBoard(UUID purchaseBoardId, UUID requestId) {
+        return purchaseRequestRepository.findByPurchaseBoardIdAndId(purchaseBoardId, requestId);
     }
 }

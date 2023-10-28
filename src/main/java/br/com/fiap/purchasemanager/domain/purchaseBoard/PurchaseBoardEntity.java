@@ -25,13 +25,6 @@ public class PurchaseBoardEntity {
         this.purchaseRequests = purchaseRequests;
     }
 
-    public PurchaseBoardEntity(String description, String constructionName, PurchaseBoardStatus status, List<PurchaseRequestEntity> purchaseRequests) {
-        this.description = description;
-        this.constructionName = constructionName;
-        this.status = status;
-        this.purchaseRequests = purchaseRequests;
-    }
-
     public UUID getId() {
         return id;
     }
@@ -62,10 +55,10 @@ public class PurchaseBoardEntity {
 
     public PurchaseBoardResponseDto toPurchaseBoardResponseDto() {
         return new PurchaseBoardResponseDto(
-                this.getId(),
-                this.getDescription(),
-                this.getConstructionName(),
-                this.getStatus().toString(),
+                this.id,
+                this.description,
+                this.constructionName,
+                this.status.toString(),
                 this.purchaseRequests
                         .stream()
                         .map( it -> it.toPurchaseRequestResponseDto(this.getId()))
@@ -75,9 +68,10 @@ public class PurchaseBoardEntity {
 
     public PurchaseBoardModel toPurchaseBoardModel() {
         return new PurchaseBoardModel(
-                this.getDescription(),
-                this.getConstructionName(),
-                this.getStatus().toString()
+                this.id,
+                this.description,
+                this.constructionName,
+                this.status.toString()
         );
     }
 }
