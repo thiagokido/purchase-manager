@@ -1,6 +1,7 @@
 package br.com.fiap.purchasemanager.infrastructure.models;
 
 import br.com.fiap.purchasemanager.domain.Order.OrderEntity;
+import br.com.fiap.purchasemanager.domain.Order.OrderStatus;
 import jakarta.persistence.*;
 
 import java.util.Collections;
@@ -37,15 +38,18 @@ public class OrderModel {
             @AttributeOverride( name = "totalValue", column = @Column(name = "payment_total_value"))
     })
     private PaymentConditionsModel paymentConditions;
+    private String status;
     @OneToMany(mappedBy = "order")
     private List<OrderItemModel> orderItems;
 
     public OrderModel() {}
 
-    public OrderModel(SupplierModel supplier, DeliveryAddressModel deliveryAddress, PaymentConditionsModel paymentConditions) {
+    public OrderModel(UUID id, SupplierModel supplier, DeliveryAddressModel deliveryAddress, PaymentConditionsModel paymentConditions, String status) {
+        this.id = id;
         this.supplier = supplier;
         this.deliveryAddress = deliveryAddress;
         this.paymentConditions = paymentConditions;
+        this.status = status;
     }
 
     public UUID getId() {
@@ -83,7 +87,8 @@ public class OrderModel {
                 : this.orderItems
                     .stream()
                     .map(OrderItemModel::toOrderItemEntity)
-                    .collect(Collectors.toList())
+                    .collect(Collectors.toList()),
+            OrderStatus.valueOf(this.status)
         );
     }
 

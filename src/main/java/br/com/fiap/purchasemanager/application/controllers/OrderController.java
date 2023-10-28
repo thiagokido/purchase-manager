@@ -34,4 +34,20 @@ public class OrderController {
         OrderResponseDto order = orderService.getById(id);
         return ResponseEntity.ok(order);
     }
+
+    @PostMapping("/{id}/approve")
+    public ResponseEntity<OrderResponseDto> approveOrder(
+            @PathVariable UUID id
+    ) {
+        OrderResponseDto order = orderService.approveOrder(id);
+        return ResponseEntity.ok(order);
+    }
+
+    @PostMapping("/{id}/reject")
+    public ResponseEntity<OrderResponseDto> rejectOrder(
+            @PathVariable UUID id
+    ) {
+        OrderResponseDto order = orderService.rejectOrder(id);
+        return ResponseEntity.ok(order);
+    }
 }

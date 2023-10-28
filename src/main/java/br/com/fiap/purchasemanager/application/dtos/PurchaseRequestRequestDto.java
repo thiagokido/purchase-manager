@@ -13,6 +13,7 @@ public record PurchaseRequestRequestDto(
 
     public PurchaseRequestEntity toPurchaseRequestEntity() {
         return new PurchaseRequestEntity(
+                null,
                 this.itemDescription(),
                 this.quantity(),
                 PurchaseRequestStatus.PENDING_APPROVAL

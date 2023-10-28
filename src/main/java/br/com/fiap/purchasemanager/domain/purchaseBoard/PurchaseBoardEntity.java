@@ -61,8 +61,10 @@ public class PurchaseBoardEntity {
                 this.status.toString(),
                 this.purchaseRequests
                         .stream()
-                        .map( it -> it.toPurchaseRequestResponseDto(this.getId()))
-                        .collect(Collectors.toList())
+                        .map( it -> it.toPurchaseRequestResponseDto(
+                                this.getId(),
+                                it.toPurchaseRequestModel(this.toPurchaseBoardModel()).getOrder())
+                        ).collect(Collectors.toList())
         );
     }
 
