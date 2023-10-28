@@ -2,12 +2,15 @@ package br.com.fiap.purchasemanager.domain.purchaseBoard;
 
 import br.com.fiap.purchasemanager.application.dtos.PurchaseBoardRequestDto;
 import br.com.fiap.purchasemanager.application.dtos.PurchaseBoardResponseDto;
+import br.com.fiap.purchasemanager.domain.exceptions.NotFoundException;
+import br.com.fiap.purchasemanager.domain.exceptions.PurchaseBoardException;
 import br.com.fiap.purchasemanager.infrastructure.models.PurchaseBoardModel;
 import br.com.fiap.purchasemanager.infrastructure.repositories.PurchaseBoardRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.UUID;
 
 @Service
@@ -39,7 +42,9 @@ public class PurchaseBoardService {
     public PurchaseBoardResponseDto findById(UUID id) {
 
         PurchaseBoardEntity purchaseBoard = purchaseBoardRepository.findById(id)
-                .orElseThrow()
+                .orElseThrow( () ->
+                        new NotFoundException(MessageFormat.format("Purchase Board with id {0} not found", id.toString()))
+                )
                 .toPurchaseBoardEntity();
 
         return purchaseBoard.toPurchaseBoardResponseDto();
@@ -53,7 +58,7 @@ public class PurchaseBoardService {
 
             purchaseBoardRepository.deleteById(purchaseBoard.toPurchaseBoardModel().getId());
         } else {
-            throw new RuntimeException("Não foi possível excluir o quadro pois ele contém requisições");
+            throw new PurchaseBoardException("Only boards with no requests can be deleted");
         }
     }
 }

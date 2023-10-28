@@ -3,8 +3,6 @@ package br.com.fiap.purchasemanager.infrastructure.models;
 import br.com.fiap.purchasemanager.domain.Order.OrderItemEntity;
 import jakarta.persistence.*;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "order_items")
 public class OrderItemModel {
@@ -62,6 +60,34 @@ public class OrderItemModel {
 
     public OrderModel getOrder() {
         return order;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void setPurchaseRequest(PurchaseRequestModel purchaseRequest) {
+        this.purchaseRequest = purchaseRequest;
+    }
+
+    public void setOrder(OrderModel order) {
+        this.order = order;
     }
 
     public OrderItemEntity toOrderItemEntity() {

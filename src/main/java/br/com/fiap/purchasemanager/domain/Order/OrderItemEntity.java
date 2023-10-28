@@ -25,14 +25,6 @@ public class OrderItemEntity {
         this.purchaseRequestId = purchaseRequestId;
     }
 
-    public OrderItemEntity(String description, int quantity, double unitPrice, double totalPrice, UUID purchaseRequestId) {
-        this.description = description;
-        this.quantity = quantity;
-        this.unitPrice = unitPrice;
-        this.totalPrice = totalPrice;
-        this.purchaseRequestId = purchaseRequestId;
-    }
-
     public Long getId() {
         return id;
     }
@@ -70,6 +62,7 @@ public class OrderItemEntity {
 
     public OrderItemDto toOrderItemDto() {
         return new OrderItemDto(
+                this.id,
                 this.description,
                 this.quantity,
                 this.unitPrice,

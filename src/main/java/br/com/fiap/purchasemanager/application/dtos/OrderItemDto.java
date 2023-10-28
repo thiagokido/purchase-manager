@@ -6,7 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.UUID;
 
 public record OrderItemDto(
-
+        
+        Long id,
         @NotBlank
         String description,
         @NotBlank
@@ -20,6 +21,7 @@ public record OrderItemDto(
 ) {
     public OrderItemEntity toOrderItemEntity() {
         return new OrderItemEntity(
+                null,
                 this.description(),
                 this.quantity(),
                 this.unitPrice(),

@@ -72,6 +72,10 @@ public class OrderModel {
         return orderItems;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
     public void setOrderItems(List<OrderItemModel> orderItems) {
         this.orderItems = orderItems;
     }
