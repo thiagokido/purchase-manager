@@ -1,4 +1,4 @@
-package br.com.fiap.purchasemanager.domain.Order.valueObjects;
+package br.com.fiap.purchasemanager.domain.order.valueObjects;
 
 import br.com.fiap.purchasemanager.application.dtos.SupplierDto;
 import br.com.fiap.purchasemanager.infrastructure.models.SupplierModel;

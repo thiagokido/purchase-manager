@@ -1,6 +1,6 @@
 package br.com.fiap.purchasemanager.infrastructure.models;
 
-import br.com.fiap.purchasemanager.domain.Order.valueObjects.DeliveryAddressVO;
+import br.com.fiap.purchasemanager.domain.order.valueObjects.DeliveryAddressVO;
 import jakarta.persistence.Embeddable;
 
 @Embeddable

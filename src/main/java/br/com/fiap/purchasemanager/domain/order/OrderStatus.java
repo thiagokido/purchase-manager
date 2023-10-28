@@ -1,4 +1,4 @@
-package br.com.fiap.purchasemanager.domain.Order;
+package br.com.fiap.purchasemanager.domain.order;
 
 public enum OrderStatus {
     PENDING_APPROVAL,

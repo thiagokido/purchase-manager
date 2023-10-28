@@ -1,4 +1,4 @@
-package br.com.fiap.purchasemanager.domain.Order;
+package br.com.fiap.purchasemanager.domain.order;
 
 import br.com.fiap.purchasemanager.application.dtos.OrderItemDto;
 import br.com.fiap.purchasemanager.application.dtos.CreateOrderRequestDto;

@@ -1,6 +1,6 @@
 package br.com.fiap.purchasemanager.infrastructure.models;
 
-import br.com.fiap.purchasemanager.domain.Order.OrderItemEntity;
+import br.com.fiap.purchasemanager.domain.order.OrderItemEntity;
 import jakarta.persistence.*;
 
 @Entity
