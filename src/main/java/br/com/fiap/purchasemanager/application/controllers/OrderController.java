@@ -1,8 +1,10 @@
 package br.com.fiap.purchasemanager.application.controllers;
 
-import br.com.fiap.purchasemanager.application.dtos.OrderRequestDto;
+import br.com.fiap.purchasemanager.application.dtos.CreateOrderRequestDto;
+import br.com.fiap.purchasemanager.application.dtos.OrderItemDto;
 import br.com.fiap.purchasemanager.application.dtos.OrderResponseDto;
 import br.com.fiap.purchasemanager.domain.Order.OrderService;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +23,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(
-            @RequestBody OrderRequestDto order
+            @RequestBody CreateOrderRequestDto order
     ) {
         OrderResponseDto createdOrder = orderService.create(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
@@ -49,5 +51,23 @@ public class OrderController {
     ) {
         OrderResponseDto order = orderService.rejectOrder(id);
         return ResponseEntity.ok(order);
+    }
+
+    @PostMapping("/{orderId}/item/{itemId}")
+    public ResponseEntity<OrderItemDto> udpateOrderItem(
+            @PathVariable UUID orderId,
+            @PathVariable Long itemId,
+            @RequestBody OrderItemDto itemDto
+    ) {
+        OrderItemDto item = orderService.updateOrderItem(orderId, itemId, itemDto);
+        return ResponseEntity.ok(item);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(
+            @PathVariable UUID id
+    ) {
+        orderService.deleteOrder(id);
+        return ResponseEntity.noContent().build();
     }
 }

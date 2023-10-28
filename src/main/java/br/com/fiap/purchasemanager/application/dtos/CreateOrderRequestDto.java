@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record OrderRequestDto(
+public record CreateOrderRequestDto(
 
         @NotBlank
         @JsonProperty("payment")
@@ -25,6 +25,7 @@ public record OrderRequestDto(
 ) {
     public OrderEntity toOrderEntity() {
         return new OrderEntity(
+                null,
                 this.paymentConditions().toPaymentConditionsVO(),
                 this.supplier().toSupplierVO(),
                 this.deliveryAddress().toDeliveryAddressVO(),
