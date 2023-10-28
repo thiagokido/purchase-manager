@@ -1,6 +1,6 @@
 package br.com.fiap.purchasemanager.application.dtos;
 
-import br.com.fiap.purchasemanager.domain.Order.valueObjects.SupplierVO;
+import br.com.fiap.purchasemanager.domain.order.valueObjects.SupplierVO;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CNPJ;
 

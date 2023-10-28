@@ -1,6 +1,6 @@
 package br.com.fiap.purchasemanager.infrastructure.models;
 
-import br.com.fiap.purchasemanager.domain.Order.valueObjects.PaymentConditionsVO;
+import br.com.fiap.purchasemanager.domain.order.valueObjects.PaymentConditionsVO;
 import jakarta.persistence.Embeddable;
 
 import java.time.LocalDate;

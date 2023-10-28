@@ -1,7 +1,7 @@
 package br.com.fiap.purchasemanager.infrastructure.models;
 
-import br.com.fiap.purchasemanager.domain.Order.OrderEntity;
-import br.com.fiap.purchasemanager.domain.Order.OrderStatus;
+import br.com.fiap.purchasemanager.domain.order.OrderEntity;
+import br.com.fiap.purchasemanager.domain.order.OrderStatus;
 import jakarta.persistence.*;
 
 import java.util.Collections;

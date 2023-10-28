@@ -1,6 +1,6 @@
 package br.com.fiap.purchasemanager.application.dtos;
 
-import br.com.fiap.purchasemanager.domain.Order.OrderItemEntity;
+import br.com.fiap.purchasemanager.domain.order.OrderItemEntity;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.UUID;

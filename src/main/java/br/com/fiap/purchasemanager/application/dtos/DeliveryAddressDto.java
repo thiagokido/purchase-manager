@@ -1,6 +1,6 @@
 package br.com.fiap.purchasemanager.application.dtos;
 
-import br.com.fiap.purchasemanager.domain.Order.valueObjects.DeliveryAddressVO;
+import br.com.fiap.purchasemanager.domain.order.valueObjects.DeliveryAddressVO;
 import jakarta.validation.constraints.NotBlank;
 
 public record DeliveryAddressDto(

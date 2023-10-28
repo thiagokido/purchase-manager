@@ -1,9 +1,9 @@
-package br.com.fiap.purchasemanager.domain.Order;
+package br.com.fiap.purchasemanager.domain.order;
 
 import br.com.fiap.purchasemanager.application.dtos.OrderResponseDto;
-import br.com.fiap.purchasemanager.domain.Order.valueObjects.DeliveryAddressVO;
-import br.com.fiap.purchasemanager.domain.Order.valueObjects.PaymentConditionsVO;
-import br.com.fiap.purchasemanager.domain.Order.valueObjects.SupplierVO;
+import br.com.fiap.purchasemanager.domain.order.valueObjects.DeliveryAddressVO;
+import br.com.fiap.purchasemanager.domain.order.valueObjects.PaymentConditionsVO;
+import br.com.fiap.purchasemanager.domain.order.valueObjects.SupplierVO;
 import br.com.fiap.purchasemanager.infrastructure.models.OrderModel;
 
 import java.util.List;
