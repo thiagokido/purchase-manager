@@ -53,6 +53,14 @@ public class PurchaseBoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPurchaseBoardDto);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePurchaseBoard(
+            @PathVariable UUID id
+    ) {
+        purchaseBoardService.deleteBoard(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/{id}/purchase-request")
     public ResponseEntity<PurchaseRequestResponseDto> createPurchaseRequest(
             @PathVariable UUID id,
@@ -69,5 +77,42 @@ public class PurchaseBoardController {
     ) {
         PurchaseRequestResponseDto requestResponseDto = purchaseRequestService.findById(boardId, requestId);
         return ResponseEntity.ok(requestResponseDto);
+    }
+
+    @PostMapping("/{boardId}/purchase-request/{requestId}/approve")
+    public ResponseEntity<PurchaseRequestResponseDto> approvePurchaseRequest(
+            @PathVariable UUID boardId,
+            @PathVariable UUID requestId
+    ) {
+        PurchaseRequestResponseDto requestResponseDto = purchaseRequestService.approveRequest(boardId, requestId);
+        return ResponseEntity.ok(requestResponseDto);
+    }
+
+    @PostMapping("/{boardId}/purchase-request/{requestId}/update")
+    public ResponseEntity<PurchaseRequestResponseDto> updatePurchaseRequest(
+            @PathVariable UUID boardId,
+            @PathVariable UUID requestId,
+            @RequestBody PurchaseRequestRequestDto purchaseRequestRequestDto
+    ) {
+        PurchaseRequestResponseDto requestResponseDto = purchaseRequestService.updateRequest(boardId, requestId, purchaseRequestRequestDto);
+        return ResponseEntity.ok(requestResponseDto);
+    }
+
+    @PostMapping("/{boardId}/purchase-request/{requestId}/reject")
+    public ResponseEntity<PurchaseRequestResponseDto> rejectPurchaseRequest(
+            @PathVariable UUID boardId,
+            @PathVariable UUID requestId
+    ) {
+        PurchaseRequestResponseDto requestResponseDto = purchaseRequestService.rejectRequest(boardId, requestId);
+        return ResponseEntity.ok(requestResponseDto);
+    }
+
+    @DeleteMapping("/{boardId}/purchase-request/{requestId}")
+    public ResponseEntity<Void> deleteRequest(
+            @PathVariable UUID boardId,
+            @PathVariable UUID requestId
+    ) {
+        purchaseRequestService.deleteRequest(boardId, requestId);
+        return ResponseEntity.noContent().build();
     }
 }

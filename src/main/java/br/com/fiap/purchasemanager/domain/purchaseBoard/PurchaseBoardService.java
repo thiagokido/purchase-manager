@@ -44,4 +44,16 @@ public class PurchaseBoardService {
 
         return purchaseBoard.toPurchaseBoardResponseDto();
     }
+
+    public void deleteBoard(UUID id) {
+
+        PurchaseBoardEntity purchaseBoard = purchaseBoardRepository.findById(id).orElseThrow().toPurchaseBoardEntity();
+
+        if (purchaseBoard.getPurchaseRequests().isEmpty()) {
+
+            purchaseBoardRepository.deleteById(purchaseBoard.toPurchaseBoardModel().getId());
+        } else {
+            throw new RuntimeException("Não foi possível excluir o quadro pois ele contém requisições");
+        }
+    }
 }

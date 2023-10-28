@@ -22,7 +22,8 @@ public class PurchaseBoardModel {
     @OneToMany(mappedBy = "purchaseBoard")
     private List<PurchaseRequestModel> purchaseRequests;
 
-    public PurchaseBoardModel(String description, String constructionName, String status) {
+    public PurchaseBoardModel(UUID id, String description, String constructionName, String status) {
+        this.id = id;
         this.description = description;
         this.constructionName = constructionName;
         this.status = status;
