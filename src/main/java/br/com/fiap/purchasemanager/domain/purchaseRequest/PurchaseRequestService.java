@@ -3,6 +3,7 @@ package br.com.fiap.purchasemanager.domain.purchaseRequest;
 import br.com.fiap.purchasemanager.application.dtos.PurchaseRequestRequestDto;
 import br.com.fiap.purchasemanager.application.dtos.PurchaseRequestResponseDto;
 import br.com.fiap.purchasemanager.domain.purchaseBoard.PurchaseBoardStatus;
+import br.com.fiap.purchasemanager.infrastructure.models.OrderModel;
 import br.com.fiap.purchasemanager.infrastructure.models.PurchaseBoardModel;
 import br.com.fiap.purchasemanager.infrastructure.models.PurchaseRequestModel;
 import br.com.fiap.purchasemanager.infrastructure.repositories.PurchaseBoardRepository;
@@ -40,15 +41,16 @@ public class PurchaseRequestService {
 
         PurchaseRequestEntity savedPurchaseRequest = purchaseRequestRepository.save(purchaseRequestModel).toPurchaseRequestEntity();
 
-        return savedPurchaseRequest.toPurchaseRequestResponseDto(purchaseBoard.getId());
+        return savedPurchaseRequest.toPurchaseRequestResponseDto(purchaseBoard.getId(), purchaseRequestModel.getOrder());
     }
 
     public PurchaseRequestResponseDto findById(UUID purchaseBoardId, UUID requestId) {
 
-        PurchaseRequestEntity purchaseRequest = getRequestByIdAndPurchaseBoard(purchaseBoardId, requestId)
-                .toPurchaseRequestEntity();
+        PurchaseRequestModel purchaseRequest = getRequestByIdAndPurchaseBoard(purchaseBoardId, requestId);
 
-        return purchaseRequest.toPurchaseRequestResponseDto(purchaseBoardId);
+        return purchaseRequest
+                .toPurchaseRequestEntity()
+                .toPurchaseRequestResponseDto(purchaseBoardId, purchaseRequest.getOrder());
     }
 
     public void deleteRequest(UUID purchaseBoardId, UUID requestId) {
@@ -75,7 +77,7 @@ public class PurchaseRequestService {
 
             return purchaseRequestRepository.save(purchaseRequest.toPurchaseRequestModel(purchaseBoard))
                     .toPurchaseRequestEntity()
-                    .toPurchaseRequestResponseDto(purchaseBoard.getId());
+                    .toPurchaseRequestResponseDto(purchaseBoard.getId(), null);
         } else {
             throw new RuntimeException("Requisições finalizadas não podem ser alteradas");
         }
@@ -92,7 +94,12 @@ public class PurchaseRequestService {
         purchaseRequest = purchaseRequestRepository.save(purchaseRequest.toPurchaseRequestModel(purchaseBoard))
                 .toPurchaseRequestEntity();
 
-        return purchaseRequest.toPurchaseRequestResponseDto(purchaseBoard.getId());
+        return purchaseRequest.toPurchaseRequestResponseDto(
+                purchaseBoard.getId(),
+                purchaseRequest.toPurchaseRequestModel(
+                        purchaseBoard
+                ).getOrder()
+        );
     }
 
     public PurchaseRequestResponseDto approveRequest(UUID purchaseBoardId, UUID requestId) {
@@ -106,7 +113,12 @@ public class PurchaseRequestService {
         purchaseRequest = purchaseRequestRepository.save(purchaseRequest.toPurchaseRequestModel(purchaseBoard))
                 .toPurchaseRequestEntity();
 
-        return purchaseRequest.toPurchaseRequestResponseDto(purchaseBoard.getId());
+        return purchaseRequest.toPurchaseRequestResponseDto(
+                purchaseBoard.getId(),
+                purchaseRequest.toPurchaseRequestModel(
+                        purchaseBoard
+                ).getOrder()
+        );
     }
 
     private PurchaseBoardModel getPurchaseBoardById(UUID purchaseBoardId) {

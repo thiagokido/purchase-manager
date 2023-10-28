@@ -1,9 +1,11 @@
 package br.com.fiap.purchasemanager.domain.purchaseRequest;
 
 import br.com.fiap.purchasemanager.application.dtos.PurchaseRequestResponseDto;
+import br.com.fiap.purchasemanager.infrastructure.models.OrderModel;
 import br.com.fiap.purchasemanager.infrastructure.models.PurchaseBoardModel;
 import br.com.fiap.purchasemanager.infrastructure.models.PurchaseRequestModel;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class PurchaseRequestEntity {
@@ -17,12 +19,6 @@ public class PurchaseRequestEntity {
 
     public PurchaseRequestEntity(UUID id, String itemDescription, int quantity, PurchaseRequestStatus status) {
         this.id = id;
-        this.itemDescription = itemDescription;
-        this.quantity = quantity;
-        this.status = status;
-    }
-
-    public PurchaseRequestEntity(String itemDescription, int quantity, PurchaseRequestStatus status) {
         this.itemDescription = itemDescription;
         this.quantity = quantity;
         this.status = status;
@@ -78,13 +74,14 @@ public class PurchaseRequestEntity {
         );
     }
 
-    public PurchaseRequestResponseDto toPurchaseRequestResponseDto(UUID purchaseBoardId) {
+    public PurchaseRequestResponseDto toPurchaseRequestResponseDto(UUID purchaseBoardId, OrderModel order) {
         return new PurchaseRequestResponseDto(
                 this.id,
                 this.itemDescription,
                 this.quantity,
                 this.status.toString(),
-                purchaseBoardId
+                purchaseBoardId,
+                Objects.isNull(order) ? null : order.getId()
         );
     }
 }

@@ -8,6 +8,7 @@ public record PurchaseRequestResponseDto(
         String itemDescription,
         int quantity,
         String status,
-        UUID purchaseBoardId
+        UUID purchaseBoardId,
+        UUID orderID
 ) {
 }

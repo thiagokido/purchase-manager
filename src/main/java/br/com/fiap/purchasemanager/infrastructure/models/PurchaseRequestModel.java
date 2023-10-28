@@ -20,6 +20,9 @@ public class PurchaseRequestModel {
     @ManyToOne
     @JoinColumn(name = "purchase_board_id", nullable = false)
     private PurchaseBoardModel purchaseBoard;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private OrderModel order;
     @OneToOne(mappedBy = "purchaseRequest")
     private OrderItemModel orderItem;
 
@@ -55,6 +58,18 @@ public class PurchaseRequestModel {
 
     public OrderItemModel getOrderItem() {
         return orderItem;
+    }
+
+    public OrderModel getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrderModel order) {
+        this.order = order;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public PurchaseRequestEntity toPurchaseRequestEntity() {
